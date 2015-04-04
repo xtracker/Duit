@@ -1,29 +1,27 @@
 package com.ms.duit;
 
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
-import android.widget.Toolbar;
 
 
 public class MainActivity extends ActionBarActivity {
 
+    private ViewPager mViewPager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
-                    .commit();
-        }
+        mViewPager = (ViewPager)findViewById(R.id.pager_main);
+        mViewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), this));
     }
 
 
@@ -57,10 +55,20 @@ public class MainActivity extends ActionBarActivity {
         public PlaceholderFragment() {
         }
 
+        private RecyclerView mRecyclerView;
+        private RecyclerView.Adapter mAdapter;
+
+        private RecyclerView.LayoutManager mLayoutManager;
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            mRecyclerView = (RecyclerView)rootView.findViewById(R.id.recyclerview_main);
+            mRecyclerView.setHasFixedSize(true);
+            mLayoutManager = new LinearLayoutManager(this.getActivity());
+            mRecyclerView.setLayoutManager(mLayoutManager);
+            mRecyclerView.setAdapter(new HeaderFooterRecyclerViewAdapter());
             return rootView;
         }
     }
