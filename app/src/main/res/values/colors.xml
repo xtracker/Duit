@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="item_separator">#5e9b9b9b</color>
+    <color name="indicator_selected">#ffff5845</color>
 </resources>
