@@ -10,8 +10,8 @@ import android.widget.TextView;
 public class ArticleItemViewHolder extends RecyclerView.ViewHolder {
 
     public TextView ArticleTextView;
-    public ArticleItemViewHolder(View itemView) {
+    public ArticleItemViewHolder(View itemView, TextView textView) {
         super(itemView);
-        ArticleTextView = (TextView)itemView;
+        ArticleTextView = textView;
     }
 }

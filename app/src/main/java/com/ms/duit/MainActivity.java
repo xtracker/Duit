@@ -1,5 +1,7 @@
 package com.ms.duit;
 
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -69,6 +71,25 @@ public class MainActivity extends ActionBarActivity {
             mLayoutManager = new LinearLayoutManager(this.getActivity());
             mRecyclerView.setLayoutManager(mLayoutManager);
             mRecyclerView.setAdapter(new HeaderFooterRecyclerViewAdapter());
+            mRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+
+                Paint paint = new Paint();
+
+                @Override
+                public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+                    super.onDraw(c, parent, state);
+                    paint.setColor(getResources().getColor(R.color.item_separator));
+                }
+
+                @Override
+                public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
+                    super.onDrawOver(c, parent, state);
+                    for (int i = 0, size = parent.getChildCount(); i < size; i++) {
+                        View child = parent.getChildAt(i);
+                        c.drawLine(child.getLeft(), child.getBottom(), child.getRight(), child.getBottom(), paint);
+                    }
+                }
+            });
             return rootView;
         }
     }

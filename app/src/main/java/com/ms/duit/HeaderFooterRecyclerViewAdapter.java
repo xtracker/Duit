@@ -1,6 +1,8 @@
 package com.ms.duit;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -11,7 +13,9 @@ public class HeaderFooterRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        return new ArticleItemViewHolder(new TextView(parent.getContext()));
+        View v = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.viewholder_item_article, parent, false);
+        return new ArticleItemViewHolder(v, (TextView)v.findViewById(R.id.text_article_title));
     }
 
     @Override
@@ -19,7 +23,6 @@ public class HeaderFooterRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 
         ArticleItemViewHolder x = (ArticleItemViewHolder)holder;
         x.ArticleTextView.setText("Text article");
-
     }
 
     @Override
