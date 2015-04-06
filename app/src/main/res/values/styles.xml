@@ -1,8 +1,23 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+        <item name="actionBarSize">@dimen/actionbar_height</item>
+        <item name="android:actionBarStyle">@style/DuitActionBar</item>
+        <!-- Support library compatibility -->
+        <item name="actionBarStyle">@style/DuitActionBar</item>
+        <item name="android:actionBarSize">@dimen/actionbar_height</item>
+
+    </style>
+
+    <!-- ActionBar styles -->
+    <style name="DuitActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/indicator_selected</item>
+        <!--item name="android:elevation">0dp</item-->
+
+        <!-- Support library compatibility -->
+        <item name="background">@color/indicator_selected</item>
     </style>
 
 </resources>

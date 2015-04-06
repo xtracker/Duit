@@ -1,16 +1,116 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" android:id="@+id/container"
     android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity" tools:ignore="MergeRootFrame">
 
-    <android.support.v4.view.ViewPager android:id="@+id/pager_main"
+    <android.support.v7.widget.Toolbar android:id="@+id/toolbar_main"
+        android:layout_height="?attr/actionBarSize"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-        <android.support.v4.view.PagerTabStrip
-            android:id="@+id/pagerTab"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top" />
-        </android.support.v4.view.ViewPager>
+        android:minHeight="?attr/actionBarSize"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        android:background="?attr/colorPrimary" />
 
-</FrameLayout>
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/navigation_drawer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <FrameLayout android:id="@+id/content_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </FrameLayout>
+
+        <!-- android:layout_gravity="start" tells DrawerLayout to treat
+         this as a sliding drawer on the left side for left-to-right
+         languages and on the right side for right-to-left languages.
+         The drawer is given a fixed width in dp and extends the full height of
+         the container. A solid background is used for contrast
+         with the content view. -->
+        <RadioGroup android:id="@+id/radioGroup"
+            android:layout_width="240dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="left|start"
+            android:background="@color/indicator_selected"
+            android:paddingTop="40dip"
+            android:orientation="vertical">
+            <RadioButton
+                android:gravity="center"
+                android:button="@null"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/radioMsgList"
+                android:text="主页"
+                android:textColor="@color/drawer_item_text"
+                android:drawableLeft="@drawable/radio_drawer_item"
+                android:drawableStart="@drawable/radio_drawer_item"
+                android:background="@drawable/drawer_item_background"
+                android:drawablePadding="-50dip"
+                android:paddingLeft="60dip"
+                android:paddingTop="10dip"
+                android:paddingBottom="10dip"
+                android:textSize="18sp"
+                android:checked="true">
+
+            </RadioButton>
+            <RadioButton
+                android:button="@null"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/radioMap"
+                android:textColor="@color/drawer_item_text"
+                android:background="@drawable/drawer_item_background"
+                android:drawableLeft="@drawable/radio_drawer_item"
+                android:drawableStart="@drawable/radio_drawer_item"
+                android:drawablePadding="-50dip"
+                android:paddingLeft="60dip"
+                android:paddingTop="10dip"
+                android:paddingBottom="10dip"
+                android:textSize="18sp"
+                android:text="Magazine"
+                android:textAlignment="center">
+
+            </RadioButton>
+
+            <RadioButton
+                android:button="@null"
+                android:gravity="center"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/radioOthers"
+                android:textColor="@color/drawer_item_text"
+                android:drawableLeft="@drawable/radio_drawer_item"
+                android:background="@drawable/drawer_item_background"
+                android:drawablePadding="-50dip"
+                android:paddingLeft="60dip"
+                android:paddingTop="10dip"
+                android:paddingBottom="10dip"
+                android:textSize="18sp"
+                android:text="推荐" />
+
+            <RadioButton
+                android:button="@null"
+                android:gravity="center"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/radioMe"
+                android:textColor="@color/drawer_item_text"
+                android:drawableLeft="@drawable/radio_drawer_item"
+                android:background="@drawable/drawer_item_background"
+                android:drawablePadding="-50dip"
+                android:paddingLeft="60dip"
+                android:paddingTop="10dip"
+                android:paddingBottom="10dip"
+                android:textSize="18sp"
+                android:text="关于">
+
+            </RadioButton>
+        </RadioGroup>
+
+    </android.support.v4.widget.DrawerLayout>
+
+</LinearLayout>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="false">
+        <shape android:shape="ring" android:useLevel="false">
+
+            <solid android:color= "@color/drawer_item_text" />
+            <stroke android:color="@color/drawer_item_text"/>
+            <size android:width= "20dip"
+                android:height= "20dip" />
+
+        </shape>
+    </item>
+
+    <item android:state_checked="true">
+        <shape android:shape="ring" android:useLevel="false">
+
+            <solid android:color= "@color/drawer_item_text" />
+            <stroke android:color="@color/drawer_item_text"/>
+
+            <size android:width= "20dip"
+                android:height= "20dip" />
+
+        </shape>
+    </item>
+</selector>

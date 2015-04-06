@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.DuitAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- colorPrimary is used for the default action bar background -->
+        <item name="colorPrimary">@color/indicator_selected</item>
+
+    <!-- colorPrimaryDark is used for the status bar -->
+        <item name="colorPrimaryDark">#c25d5d5d</item>
+
+    <!-- colorAccent is used as the default value for colorControlActivated,
+         which is used to tint widgets -->
+        <item name="colorAccent">#ff353dff</item>
+
+    <!-- You can also set colorControlNormal, colorControlActivated
+         colorControlHighlight, and colorSwitchThumbNormal. -->
+        <item name="android:actionBarSize">@dimen/actionbar_height</item>
+        <item name="actionBarSize">@dimen/actionbar_height</item>
+
+    </style>
+</resources>

@@ -2,4 +2,5 @@
 <resources>
     <color name="item_separator">#5e9b9b9b</color>
     <color name="indicator_selected">#ffff5845</color>
+    <color name="drawer_item_text">#ffffff</color>
 </resources>
