@@ -1,4 +1,4 @@
-package com.ms.duit;
+package com.ms.duit.ui;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;

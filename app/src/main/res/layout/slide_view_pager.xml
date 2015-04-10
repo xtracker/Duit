@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.ms.duit.WrapContentViewPager
+    <com.ms.duit.ui.WrapContentViewPager
         android:id="@+id/viewpager_slideshow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

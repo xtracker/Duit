@@ -16,8 +16,7 @@ import java.lang.ref.WeakReference;
  */
 public class BitmapHelper {
 
-     public static int calculateInSampleSize(BitmapFactory.Options options,
-                                            int reqWidth, int reqHeight) {
+     public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
         // BEGIN_INCLUDE (calculate_sample_size)
         // Raw height and width of image
         final int height = options.outHeight;
@@ -111,6 +110,13 @@ public class BitmapHelper {
             }
 
         }
+
+        @Override
+        protected void onCancelled(BitmapDrawable bitmapDrawable) {
+            super.onCancelled(bitmapDrawable);
+        }
     }
+
+    public static class AsyncDrawable extends BitmapDrawable {}
 
 }

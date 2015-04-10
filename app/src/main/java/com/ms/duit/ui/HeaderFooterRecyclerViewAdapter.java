@@ -1,10 +1,12 @@
-package com.ms.duit;
+package com.ms.duit.ui;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.ms.duit.R;
 
 /**
  * Created by jarzhao on 4/5/2015.

@@ -1,4 +1,4 @@
-package com.ms.duit;
+package com.ms.duit.ui;
 
 import android.content.Context;
 import android.graphics.Point;
@@ -12,7 +12,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.ms.duit.R;
 import com.ms.duit.utils.bitmap.BitmapHelper;
+import com.ms.duit.utils.bitmap.DisplayUtils;
 
 import java.util.ArrayList;
 

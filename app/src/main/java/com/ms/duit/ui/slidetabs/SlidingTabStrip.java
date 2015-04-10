@@ -1,4 +1,4 @@
-package com.ms.duit.slidetabs;
+package com.ms.duit.ui.slidetabs;
 
 /**
  * Created by jarzhao on 4/6/2015.

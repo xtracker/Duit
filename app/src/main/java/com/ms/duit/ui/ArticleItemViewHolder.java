@@ -1,4 +1,4 @@
-package com.ms.duit;
+package com.ms.duit.ui;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

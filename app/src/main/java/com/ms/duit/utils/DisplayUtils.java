@@ -1,8 +1,10 @@
-package com.ms.duit;
+package com.ms.duit.utils;
 
 import android.content.Context;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
+
+import com.ms.duit.DuitApplication;
 
 /**
  * Created by jarzhao on 4/5/2015.

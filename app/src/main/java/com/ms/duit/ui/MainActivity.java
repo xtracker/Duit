@@ -1,4 +1,4 @@
-package com.ms.duit;
+package com.ms.duit.ui;
 
 import android.content.res.Configuration;
 import android.graphics.Canvas;
@@ -22,7 +22,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
 
-import com.ms.duit.slidetabs.SlidingTabLayout;
+import com.ms.duit.R;
+import com.ms.duit.ui.slidetabs.SlidingTabLayout;
 
 
 public class MainActivity extends ActionBarActivity {
