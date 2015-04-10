@@ -1,8 +1,10 @@
 package com.ms.duit;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 /**
  * Created by jarzhao on 4/5/2015.
@@ -11,23 +13,37 @@ public class HeaderFooterRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        /*View v = LayoutInflater.from(parent.getContext())
+        //View v = LayoutInflater.from(parent.getContext())
+               // .inflate(R.layout.slide_view_pager, parent, false);
+        //return new ArticleItemViewHolder(v, (TextView)v.findViewById(R.id.text_article_title));
+        if (viewType == TYPE_HEADER) {
+            SlideViewPager slideViewPager = new SlideViewPager(parent.getContext());
+            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            slideViewPager.setLayoutParams(layoutParams);
+            return new HeaderViewHolder(slideViewPager);
+        }
+        else {
+            View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.viewholder_item_article, parent, false);
-        return new ArticleItemViewHolder(v, (TextView)v.findViewById(R.id.text_article_title));*/
-        SlideViewPager slideViewPager = new SlideViewPager(parent.getContext());
-        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        slideViewPager.setLayoutParams(layoutParams);
-        return HeaderViewHolder.createFrom(slideViewPager);
+            return new ArticleItemViewHolder(v, (TextView)v.findViewById(R.id.text_article_title));
+        }
+
+
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
+        if (holder instanceof HeaderViewHolder) {
+            SlideViewPager pager = (SlideViewPager)holder.itemView;
+            pager.setAdapter(new SlideViewPager.SlideViewPagerAdapter(pager.getContext(), new String[] {"P50408-205046.JPG","P50408-214225.JPG"}));
+        } else {
+            (((ArticleItemViewHolder)holder).ArticleTextView).setText("Item...");
+        }
     }
 
     @Override
     public int getItemCount() {
-        return 10;
+        return 2;
     }
 
     private final int TYPE_HEADER = 0;
@@ -44,10 +60,6 @@ public class HeaderFooterRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 
         public HeaderViewHolder(View itemView) {
             super(itemView);
-        }
-
-        public static HeaderViewHolder createFrom(SlideViewPager slideViewPager) {
-            return new HeaderViewHolder(slideViewPager);
         }
     }
 }

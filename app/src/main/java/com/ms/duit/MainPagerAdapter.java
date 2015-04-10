@@ -29,6 +29,6 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return 1;
     }
 }

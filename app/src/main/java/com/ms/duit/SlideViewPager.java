@@ -2,14 +2,17 @@ package com.ms.duit;
 
 import android.content.Context;
 import android.graphics.Point;
+import android.os.Environment;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.ms.duit.utils.bitmap.BitmapHelper;
 
 import java.util.ArrayList;
 
@@ -17,11 +20,10 @@ import java.util.ArrayList;
  * Created by jarzhao on 4/5/2015.
  */
 
-
 public class SlideViewPager extends FrameLayout {
 
 
-    private ViewPager mViewPager;
+    private WrapContentViewPager mViewPager;
     private PagerAdapter mPagerAdapter;
     private LinearLayout mIndicatorContainer;
     private TextView mTitle;
@@ -30,7 +32,7 @@ public class SlideViewPager extends FrameLayout {
 
         super(context);
         SetUpChildViews(context);
-        setupIndicators();
+        //setupIndicators();
     }
 
     public SlideViewPager(Context context, AttributeSet attrs) {
@@ -45,27 +47,25 @@ public class SlideViewPager extends FrameLayout {
 
     private void SetUpChildViews(Context context) {
         inflate(context, R.layout.slide_view_pager, this);
-        mViewPager = (ViewPager)findViewById(R.id.viewpager_slideshow);
+        mViewPager = (WrapContentViewPager)findViewById(R.id.viewpager_slideshow);
         mTitle = (TextView)findViewById(R.id.viewpager_title);
         mIndicatorContainer = (LinearLayout)findViewById(R.id.viewpager_indicator);
-
     }
 
     public static Point getSize() {
         int width = DisplayUtils.getScreenWidth() - DisplayUtils.dip2px(DisplayUtils.getDimension(R.dimen.activity_horizontal_margin) * 2);
-        int height = (int)(((float)width * 1.0) * 0.6 );
+        int height = (int)(((float)width * 1.0) * 0.5 );
         return new Point(width, height);
-
     }
 
     private void setupIndicators() {
-        int count = 4;
+        int count = mPagerAdapter.getCount();
         if (mIndicatorContainer.getChildCount() > 0) {
             mIndicatorContainer.removeAllViews();
         }
         for (int i = 0; i < count; ++i) {
             View indicator = new View(this.getContext());
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(40, 10);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(20, 5);
             layoutParams.setMargins(10, 10, 10, 10);
             indicator.setBackgroundColor(getContext().getResources().getColor(R.color.indicator_selected));
             mIndicatorContainer.addView(indicator, layoutParams);
@@ -94,9 +94,19 @@ public class SlideViewPager extends FrameLayout {
 
     public static class SlideViewPagerAdapter extends PagerAdapter {
 
+        private final Context mContext;
+        private String[] mDataSet;
+        private String imagePath;
+        public SlideViewPagerAdapter(Context context, String[] dataSet) {
+            super();
+            mContext = context;
+            mDataSet = dataSet;
+            imagePath = Environment.getExternalStorageDirectory().getPath() + "/DCIM/";
+        }
+
         @Override
         public int getCount() {
-            return 0;
+            return mDataSet.length;
         }
 
         @Override
@@ -106,12 +116,22 @@ public class SlideViewPager extends FrameLayout {
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            super.destroyItem(container, position, object);
+            //super.destroyItem(container, position, object);
+            container.removeViewAt(position);
         }
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            return super.instantiateItem(container, position);
+            Point x = getSize();
+
+            ImageView imageView = new ImageView(mContext);
+            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, x.y);
+            imageView.setLayoutParams(new LayoutParams(x.x, x.y));
+            BitmapHelper.loadBitmap(imageView, imagePath + mDataSet[position], x.x, x.y);
+            imageView.setImageResource(R.drawable.drawer_item_background);
+
+            container.addView(imageView, position, layoutParams);
+            return imageView;
         }
 
         @Override
