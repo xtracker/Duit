@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -23,7 +22,6 @@ import android.view.ViewGroup;
 import android.widget.RadioGroup;
 
 import com.ms.duit.R;
-import com.ms.duit.ui.slidetabs.SlidingTabLayout;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -118,29 +116,6 @@ public class MainActivity extends ActionBarActivity {
          mActionBarDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    public static class ContentFragment extends Fragment {
-
-        private ViewPager mViewPager;
-        private SlidingTabLayout mSlidingTabLayout;
-        public ContentFragment() {}
-
-        public static ContentFragment newInstance(int position) {
-            return new ContentFragment();
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_content, container, false);
-
-            mViewPager = (ViewPager)rootView.findViewById(R.id.pager_main);
-            mViewPager.setAdapter(new MainPagerAdapter(getActivity().getSupportFragmentManager(), getActivity()));
-            mSlidingTabLayout = (SlidingTabLayout) rootView.findViewById(R.id.sliding_tabs);
-            mSlidingTabLayout.setViewPager(mViewPager);
-            mSlidingTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.indicator_selected));
-            return rootView;
-        }
-    }
-
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -153,6 +128,7 @@ public class MainActivity extends ActionBarActivity {
         private RecyclerView.Adapter mAdapter;
 
         private RecyclerView.LayoutManager mLayoutManager;
+        //private SwipeRefreshLayout mSwipeRefreshLayout;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -182,7 +158,26 @@ public class MainActivity extends ActionBarActivity {
                     }
                 }
             });
+
+           // mSwipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.refresh_main);
             return rootView;
+        }
+
+        @Override
+        public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+            super.onViewCreated(view, savedInstanceState);
+
+           /* mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    (new Handler()).postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mSwipeRefreshLayout.setRefreshing(false);
+                        }
+                    }, 4 * 1000);
+                }
+            });*/
         }
     }
 }

@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.ThumbnailUtils;
 import android.os.AsyncTask;
+import android.util.LruCache;
 import android.widget.ImageView;
 
 import com.ms.duit.DuitApplication;
@@ -15,6 +16,26 @@ import java.lang.ref.WeakReference;
  * Created by jarzhao on 4/8/2015.
  */
 public class BitmapHelper {
+
+    private static LruCache<String, Bitmap> s_imageMemoryCache;
+
+    private static void InitImageCache() {
+        if (s_imageMemoryCache == null) {
+            final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+
+            // Use 1/8th of the available memory for this memory cache.
+            final int cacheSize = maxMemory / 8;
+
+            s_imageMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
+                @Override
+                protected int sizeOf(String key, Bitmap bitmap) {
+                    // The cache size will be measured in kilobytes rather than
+                    // number of items.
+                    return bitmap.getByteCount() / 1024;
+                }
+            };
+        }
+    }
 
      public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
         // BEGIN_INCLUDE (calculate_sample_size)
@@ -56,11 +77,16 @@ public class BitmapHelper {
     }
 
     public static void loadBitmap(ImageView imageView, String path, int width, int height) {
-        BitmapWorkerTask task = new BitmapWorkerTask(imageView, path, width, height);
-        task.execute();
 
-        //Bitmap bmp = decodeSampledBitmapFromResource(path, width, height);
-        //imageView.setImageBitmap(ThumbnailUtils.extractThumbnail(bmp, width, height));
+        InitImageCache();
+        if (s_imageMemoryCache.get(path) != null) {
+            imageView.setImageBitmap(s_imageMemoryCache.get(path));
+        } else {
+            BitmapWorkerTask task = new BitmapWorkerTask(imageView, path, width, height);
+            task.execute();
+        }
+
+
     }
 
     public static Bitmap decodeSampledBitmapFromResource(String path, int reqWidth, int reqHeight) {
@@ -97,6 +123,12 @@ public class BitmapHelper {
             if (isCancelled())
                 return null;
 
+           /* try {
+                //Thread.sleep(1000 * 2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }*/
+
             Bitmap bmp = decodeSampledBitmapFromResource((String)mData, mWidth, mHeight);
 
             return new BitmapDrawable(DuitApplication.getAppContext().getResources(), ThumbnailUtils.extractThumbnail(bmp, mWidth, mHeight));
@@ -109,6 +141,10 @@ public class BitmapHelper {
                 imageView.setImageDrawable(bitmapDrawable);
             }
 
+            String key = (String)mData;
+            if (s_imageMemoryCache.get(key) == null) {
+                s_imageMemoryCache.put(key, bitmapDrawable.getBitmap());
+            }
         }
 
         @Override
@@ -116,7 +152,4 @@ public class BitmapHelper {
             super.onCancelled(bitmapDrawable);
         }
     }
-
-    public static class AsyncDrawable extends BitmapDrawable {}
-
 }

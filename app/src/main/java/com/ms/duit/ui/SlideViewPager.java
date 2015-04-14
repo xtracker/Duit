@@ -1,21 +1,31 @@
 package com.ms.duit.ui;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.support.v4.view.PagerAdapter;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ms.duit.R;
+import com.ms.duit.utils.DisplayUtils;
+import com.ms.duit.utils.SysUtils;
 import com.ms.duit.utils.bitmap.BitmapHelper;
-import com.ms.duit.utils.bitmap.DisplayUtils;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 /**
@@ -26,7 +36,7 @@ public class SlideViewPager extends FrameLayout {
 
 
     private WrapContentViewPager mViewPager;
-    private PagerAdapter mPagerAdapter;
+    private SlideViewPagerAdapter mPagerAdapter;
     private LinearLayout mIndicatorContainer;
     private TextView mTitle;
     private ArrayList<ISlideViewPagerChangedListener> mSlideViewPagerChangedListeners;
@@ -52,6 +62,21 @@ public class SlideViewPager extends FrameLayout {
         mViewPager = (WrapContentViewPager)findViewById(R.id.viewpager_slideshow);
         mTitle = (TextView)findViewById(R.id.viewpager_title);
         mIndicatorContainer = (LinearLayout)findViewById(R.id.viewpager_indicator);
+
+        mViewPager.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int width = mViewPager.getWidth();
+                if (mPagerAdapter == null) return;
+                mPagerAdapter.setPagerRealWidth(width);
+                mPagerAdapter.notifyDataSetChanged();
+                if (SysUtils.hasJellyBean())
+                    mViewPager.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                else
+                    mViewPager.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+            }
+        });
+
     }
 
     public static Point getSize() {
@@ -74,12 +99,16 @@ public class SlideViewPager extends FrameLayout {
         }
     }
 
-    public void setAdapter(PagerAdapter pagerAdapter) {
+    public void setAdapter(SlideViewPagerAdapter pagerAdapter) {
         if (mViewPager != null) {
             mViewPager.setAdapter(pagerAdapter);
             mPagerAdapter = pagerAdapter;
             setupIndicators();
         }
+    }
+
+    public SlideViewPagerAdapter getAdapter() {
+        return mPagerAdapter;
     }
 
     public void AddSlideViewPagerChangedListener(ISlideViewPagerChangedListener slideViewPagerChangedListener) {
@@ -99,6 +128,7 @@ public class SlideViewPager extends FrameLayout {
         private final Context mContext;
         private String[] mDataSet;
         private String imagePath;
+        private int mWidth = -1;
         public SlideViewPagerAdapter(Context context, String[] dataSet) {
             super();
             mContext = context;
@@ -108,8 +138,11 @@ public class SlideViewPager extends FrameLayout {
 
         @Override
         public int getCount() {
-            return mDataSet.length;
+                return getPagerRealWidth() > 0 ? mDataSet.length : 0;
         }
+
+        public int getPagerRealWidth() { return mWidth; }
+        public void setPagerRealWidth(int val) { mWidth = val;}
 
         @Override
         public CharSequence getPageTitle(int position) {
@@ -119,7 +152,8 @@ public class SlideViewPager extends FrameLayout {
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             //super.destroyItem(container, position, object);
-            container.removeViewAt(position);
+            container.removeView((View)object);
+
         }
 
         @Override
@@ -129,16 +163,70 @@ public class SlideViewPager extends FrameLayout {
             ImageView imageView = new ImageView(mContext);
             ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, x.y);
             imageView.setLayoutParams(new LayoutParams(x.x, x.y));
+            imageView.setImageDrawable(new DrawablePlaceHolder(mContext.getResources(), imageView));
             BitmapHelper.loadBitmap(imageView, imagePath + mDataSet[position], x.x, x.y);
-            imageView.setImageResource(R.drawable.drawer_item_background);
 
-            container.addView(imageView, position, layoutParams);
+            container.addView(imageView);
             return imageView;
         }
 
         @Override
         public boolean isViewFromObject(View view, Object object) {
             return view == object;
+        }
+    }
+
+    private static class DrawablePlaceHolder extends Drawable {
+
+        private WeakReference<ImageView> mImageViewWeakReference;
+
+        private static Bitmap s_loadingBitmap = null;
+
+        private static Bitmap getLoadingBitmap(Resources res) {
+            if (s_loadingBitmap == null) {
+                s_loadingBitmap = BitmapFactory.decodeResource(res, R.mipmap.duit);
+            }
+
+            return s_loadingBitmap;
+        }
+
+        private final Resources mRes;
+        public DrawablePlaceHolder(Resources res, ImageView imageView) {
+            mRes = res;
+            mImageViewWeakReference = new WeakReference<ImageView>(imageView);
+        }
+
+        @Override
+        public void draw(Canvas canvas) {
+            canvas.drawColor(mRes.getColor(R.color.duit_app_color_grey));
+            Bitmap bitmap = getLoadingBitmap(mRes);
+
+            canvas.drawBitmap(bitmap, 540 - bitmap.getScaledWidth(canvas) / 2, 270 - bitmap.getScaledHeight(canvas) / 2, new Paint());
+        }
+
+        @Override
+        public void setAlpha(int alpha) {
+
+        }
+
+        @Override
+        public void setColorFilter(ColorFilter cf) {
+
+        }
+
+        @Override
+        public int getOpacity() {
+            return 0;
+        }
+
+        @Override
+        public int getIntrinsicWidth() {
+            return 1080;
+        }
+
+        @Override
+        public int getIntrinsicHeight() {
+            return 540;
         }
     }
 

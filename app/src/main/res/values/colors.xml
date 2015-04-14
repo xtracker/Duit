@@ -4,4 +4,5 @@
     <color name="indicator_selected">@color/duit_app_color_primary</color>
     <color name="drawer_item_text">#ffffff</color>
     <color name="duit_app_color_primary">#e311b1f2</color>
+    <color name="duit_app_color_grey">#ffc1c1c1</color>
 </resources>
