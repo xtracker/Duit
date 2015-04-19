@@ -8,10 +8,14 @@ import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -34,48 +38,96 @@ import java.util.ArrayList;
 
 public class SlideViewPager extends FrameLayout {
 
+    private static final int DEFAULT_INDICATOR_WIDTH_DIP = 10;
+    private static final int DEFAULT_INDICATOR_HEIGHT_DIP = 2;
+    private static final int DEFAULT_INDICATOR_MARGIN_DIP = 2;
 
-    private WrapContentViewPager mViewPager;
-    private SlideViewPagerAdapter mPagerAdapter;
+
+    private ViewPager mViewPager;
+    private PagerAdapter mPagerAdapter;
     private LinearLayout mIndicatorContainer;
     private TextView mTitle;
-    private ArrayList<ISlideViewPagerChangedListener> mSlideViewPagerChangedListeners;
+    private ArrayList<OnSlideViewPageChangedListener> mSlideViewPagerChangedListeners;
     public SlideViewPager(Context context) {
 
         super(context);
-        SetUpChildViews(context);
-        //setupIndicators();
+        setUpChildViews(context);
     }
 
     public SlideViewPager(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
-        SetUpChildViews(context);
+        setUpChildViews(context);
     }
 
     public SlideViewPager(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        SetUpChildViews(context);
+        setUpChildViews(context);
     }
 
-    private void SetUpChildViews(Context context) {
-        inflate(context, R.layout.slide_view_pager, this);
-        mViewPager = (WrapContentViewPager)findViewById(R.id.viewpager_slideshow);
-        mTitle = (TextView)findViewById(R.id.viewpager_title);
-        mIndicatorContainer = (LinearLayout)findViewById(R.id.viewpager_indicator);
+    public void refreshIndicators(int selection) {
+        for (int i = 0; i < this.mIndicatorContainer.getChildCount(); ++i) {
+            if (i == selection) {
+                mIndicatorContainer.getChildAt(i).setBackgroundColor(getContext().getResources().getColor(R.color.indicator_selected));
+            } else {
+                mIndicatorContainer.getChildAt(i).setBackgroundColor(getContext().getResources().getColor(R.color.indicator_unselected));
+            }
+        }
+    }
+
+    private void setUpChildViews(Context context) {
+
+        mViewPager = new ViewPager(context);
+        mViewPager.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        this.addView(mViewPager);
+        TextView textView = new TextView(context);
+        textView.setGravity(Gravity.BOTTOM);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        textView.setTypeface(Typeface.DEFAULT_BOLD);
+        mTitle = textView;
+        mIndicatorContainer = new LinearLayout(context);
+        mIndicatorContainer.setOrientation(LinearLayout.HORIZONTAL);
+        FrameLayout.LayoutParams indicatorContainerLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+        indicatorContainerLayoutParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM;
+        mIndicatorContainer.setLayoutParams(indicatorContainerLayoutParams);
+        this.addView(mIndicatorContainer);
+
 
         mViewPager.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 int width = mViewPager.getWidth();
                 if (mPagerAdapter == null) return;
-                mPagerAdapter.setPagerRealWidth(width);
-                mPagerAdapter.notifyDataSetChanged();
+                //mPagerAdapter.setPagerRealWidth(width);
+                // mPagerAdapter.notifyDataSetChanged();
+                //populateIndicators();
                 if (SysUtils.hasJellyBean())
                     mViewPager.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 else
                     mViewPager.getViewTreeObserver().removeGlobalOnLayoutListener(this);
             }
         });
+
+        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                /*for (OnSlideViewPageChangedListener listener : mSlideViewPagerChangedListeners) {
+                    listener.onSlideViewPageChanged(position);
+                }*/
+
+                refreshIndicators(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
 
     }
 
@@ -85,42 +137,49 @@ public class SlideViewPager extends FrameLayout {
         return new Point(width, height);
     }
 
-    private void setupIndicators() {
+    private void populateIndicators() {
         int count = mPagerAdapter.getCount();
         if (mIndicatorContainer.getChildCount() > 0) {
             mIndicatorContainer.removeAllViews();
         }
+
+        int curSel = mViewPager.getCurrentItem();
         for (int i = 0; i < count; ++i) {
             View indicator = new View(this.getContext());
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(20, 5);
-            layoutParams.setMargins(10, 10, 10, 10);
-            indicator.setBackgroundColor(getContext().getResources().getColor(R.color.indicator_selected));
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(DisplayUtils.dip2px(DEFAULT_INDICATOR_WIDTH_DIP), DisplayUtils.dip2px(DEFAULT_INDICATOR_HEIGHT_DIP));
+            layoutParams.setMargins(5, 10, 5, 20);
+            if (i == curSel) {
+                indicator.setBackgroundColor(getContext().getResources().getColor(R.color.indicator_selected));
+            } else {
+                indicator.setBackgroundColor(getContext().getResources().getColor(R.color.indicator_unselected));
+            }
+
             mIndicatorContainer.addView(indicator, layoutParams);
         }
     }
 
-    public void setAdapter(SlideViewPagerAdapter pagerAdapter) {
+    public void setAdapter(PagerAdapter pagerAdapter) {
         if (mViewPager != null) {
             mViewPager.setAdapter(pagerAdapter);
             mPagerAdapter = pagerAdapter;
-            setupIndicators();
+            populateIndicators();
         }
     }
 
-    public SlideViewPagerAdapter getAdapter() {
+    public PagerAdapter getAdapter() {
         return mPagerAdapter;
     }
 
-    public void AddSlideViewPagerChangedListener(ISlideViewPagerChangedListener slideViewPagerChangedListener) {
+    public void AddSlideViewPagerChangedListener(OnSlideViewPageChangedListener slideViewPageChangedListener) {
         if (mSlideViewPagerChangedListeners == null) {
-            mSlideViewPagerChangedListeners = new ArrayList<ISlideViewPagerChangedListener>();
+            mSlideViewPagerChangedListeners = new ArrayList<OnSlideViewPageChangedListener>();
         }
-        if (!mSlideViewPagerChangedListeners.contains(slideViewPagerChangedListener))
-            mSlideViewPagerChangedListeners.add(slideViewPagerChangedListener);
+        if (!mSlideViewPagerChangedListeners.contains(slideViewPageChangedListener))
+            mSlideViewPagerChangedListeners.add(slideViewPageChangedListener);
     }
 
-    public static interface ISlideViewPagerChangedListener {
-        void OnSlideViewPagerChanged(int currentItem);
+    public static interface OnSlideViewPageChangedListener {
+        void onSlideViewPageChanged(int currentItem);
     }
 
     public static class SlideViewPagerAdapter extends PagerAdapter {
@@ -129,6 +188,7 @@ public class SlideViewPager extends FrameLayout {
         private String[] mDataSet;
         private String imagePath;
         private int mWidth = -1;
+
         public SlideViewPagerAdapter(Context context, String[] dataSet) {
             super();
             mContext = context;
@@ -138,7 +198,7 @@ public class SlideViewPager extends FrameLayout {
 
         @Override
         public int getCount() {
-                return getPagerRealWidth() > 0 ? mDataSet.length : 0;
+                return 3;//mDataSet.length; //getPagerRealWidth() > 0 ? mDataSet.length : 0;
         }
 
         public int getPagerRealWidth() { return mWidth; }
@@ -151,9 +211,7 @@ public class SlideViewPager extends FrameLayout {
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            //super.destroyItem(container, position, object);
             container.removeView((View)object);
-
         }
 
         @Override
@@ -161,9 +219,11 @@ public class SlideViewPager extends FrameLayout {
             Point x = getSize();
 
             ImageView imageView = new ImageView(mContext);
-            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, x.y);
-            imageView.setLayoutParams(new LayoutParams(x.x, x.y));
+            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            imageView.setLayoutParams(layoutParams);
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             imageView.setImageDrawable(new DrawablePlaceHolder(mContext.getResources(), imageView));
+
             BitmapHelper.loadBitmap(imageView, imagePath + mDataSet[position], x.x, x.y);
 
             container.addView(imageView);
@@ -176,7 +236,7 @@ public class SlideViewPager extends FrameLayout {
         }
     }
 
-    private static class DrawablePlaceHolder extends Drawable {
+    public static class DrawablePlaceHolder extends Drawable {
 
         private WeakReference<ImageView> mImageViewWeakReference;
 

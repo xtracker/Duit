@@ -124,6 +124,7 @@ public class MainActivity extends ActionBarActivity {
         public PlaceholderFragment() {
         }
 
+
         private RecyclerView mRecyclerView;
         private RecyclerView.Adapter mAdapter;
 
@@ -133,12 +134,13 @@ public class MainActivity extends ActionBarActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
+
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             mRecyclerView = (RecyclerView)rootView.findViewById(R.id.recyclerview_main);
             mRecyclerView.setHasFixedSize(true);
             mLayoutManager = new LinearLayoutManager(this.getActivity());
             mRecyclerView.setLayoutManager(mLayoutManager);
-            mRecyclerView.setAdapter(new HeaderFooterRecyclerViewAdapter());
+            mRecyclerView.setAdapter(new HeaderFooterRecyclerViewAdapter(getActivity()));
             mRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
 
                 Paint paint = new Paint();
@@ -161,6 +163,11 @@ public class MainActivity extends ActionBarActivity {
 
            // mSwipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.refresh_main);
             return rootView;
+        }
+
+        @Override
+        public void onDestroyView() {
+            super.onDestroyView();
         }
 
         @Override

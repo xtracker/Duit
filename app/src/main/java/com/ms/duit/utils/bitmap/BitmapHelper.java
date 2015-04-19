@@ -3,7 +3,6 @@ package com.ms.duit.utils.bitmap;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.ThumbnailUtils;
 import android.os.AsyncTask;
 import android.util.LruCache;
 import android.widget.ImageView;
@@ -123,15 +122,15 @@ public class BitmapHelper {
             if (isCancelled())
                 return null;
 
-           /* try {
-                //Thread.sleep(1000 * 2);
+            try {
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }*/
+            }
 
             Bitmap bmp = decodeSampledBitmapFromResource((String)mData, mWidth, mHeight);
 
-            return new BitmapDrawable(DuitApplication.getAppContext().getResources(), ThumbnailUtils.extractThumbnail(bmp, mWidth, mHeight));
+            return new BitmapDrawable(DuitApplication.getAppContext().getResources(), /*ThumbnailUtils.extractThumbnail(*/bmp/*, mWidth, mHeight)*/);
         }
 
         @Override
