@@ -1,7 +1,10 @@
 package com.ms.duit.ui;
 
+import android.graphics.Typeface;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,10 +36,19 @@ public class HeaderFooterRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 
             return new HeaderViewHolder(slideViewPager);
         }
-        else {
+        else if (viewType == TYPE_ITEM) {
             View v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.viewholder_item_article, parent, false);
             return new ArticleItemViewHolder(v, (TextView)v.findViewById(R.id.text_article_title));
+        } else {
+            TextView textView = new TextView(parent.getContext());
+            textView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            textView.setGravity(Gravity.CENTER);
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+            textView.setTypeface(Typeface.DEFAULT);
+            textView.setText("加载更多。。。");
+            return new FooterViewHolder(textView);
+
         }
     }
 
@@ -55,8 +67,8 @@ public class HeaderFooterRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
             SlideViewPager pager = (SlideViewPager)holder.itemView;
             //pager.setAdapter(new SlideViewPager.SlideViewPagerAdapter(pager.getContext(), new String[] {"P50408-205046.JPG","P50408-214225.JPG", "P50408-214230.JPG"}));
 
-        } else {
-            (((ArticleItemViewHolder)holder).ArticleTextView).setText("Item...");
+        } else if (holder instanceof ArticleItemViewHolder)  {
+            (((ArticleItemViewHolder)holder).ArticleTextView).setText("Android开发技巧");
             ImageView imageView = (ImageView)holder.itemView.findViewById(R.id.article_thumbnail);
             imageView.setImageResource(R.mipmap.duit);
         }
@@ -69,10 +81,13 @@ public class HeaderFooterRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 
     private final int TYPE_HEADER = 0;
     private final int TYPE_ITEM = 1;
+    private final int TYPE_FOOTER = 2;
     @Override
     public int getItemViewType(int position) {
         if (position == 0)
             return TYPE_HEADER;
+        else if (position == 19)
+            return TYPE_FOOTER;
 
         return TYPE_ITEM;
     }
@@ -84,6 +99,18 @@ public class HeaderFooterRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
     public static class HeaderViewHolder extends RecyclerView.ViewHolder implements OnRecycledListener {
 
         public HeaderViewHolder(View itemView) {
+            super(itemView);
+        }
+
+        @Override
+        public void OnRecycled() {
+
+        }
+    }
+
+    public static class FooterViewHolder extends RecyclerView.ViewHolder implements OnRecycledListener {
+
+        public FooterViewHolder(View itemView) {
             super(itemView);
         }
 

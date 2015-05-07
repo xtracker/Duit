@@ -1,14 +1,17 @@
 package com.ms.duit.ui;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -82,6 +85,7 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            startActivity(new Intent(this, ArticleDetailsActivity.class));
             return true;
         }
 
@@ -129,7 +133,7 @@ public class MainActivity extends ActionBarActivity {
         private RecyclerView.Adapter mAdapter;
 
         private RecyclerView.LayoutManager mLayoutManager;
-        //private SwipeRefreshLayout mSwipeRefreshLayout;
+        private SwipeRefreshLayout mSwipeRefreshLayout;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -161,7 +165,8 @@ public class MainActivity extends ActionBarActivity {
                 }
             });
 
-           // mSwipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.refresh_main);
+            mSwipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.refresh_main);
+            mSwipeRefreshLayout.setEnabled(false);
             return rootView;
         }
 
@@ -174,7 +179,7 @@ public class MainActivity extends ActionBarActivity {
         public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
 
-           /* mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
                     (new Handler()).postDelayed(new Runnable() {
@@ -182,9 +187,9 @@ public class MainActivity extends ActionBarActivity {
                         public void run() {
                             mSwipeRefreshLayout.setRefreshing(false);
                         }
-                    }, 4 * 1000);
+                    }, 2 * 1000);
                 }
-            });*/
+            });
         }
     }
 }

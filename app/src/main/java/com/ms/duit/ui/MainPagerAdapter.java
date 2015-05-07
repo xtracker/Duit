@@ -19,7 +19,7 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return "类别" + (position + 1);
+        return "iOS开发指南" + (position + 1);
     }
 
     @Override

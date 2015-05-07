@@ -29,6 +29,7 @@ import com.ms.duit.utils.DisplayUtils;
 import com.ms.duit.utils.SysUtils;
 import com.ms.duit.utils.bitmap.BitmapHelper;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
@@ -66,7 +67,7 @@ public class SlideViewPager extends FrameLayout {
 
     public void refreshIndicators(int selection) {
         for (int i = 0; i < this.mIndicatorContainer.getChildCount(); ++i) {
-            if (i == selection) {
+            if (i == selection % 3) {
                 mIndicatorContainer.getChildAt(i).setBackgroundColor(getContext().getResources().getColor(R.color.indicator_selected));
             } else {
                 mIndicatorContainer.getChildAt(i).setBackgroundColor(getContext().getResources().getColor(R.color.indicator_unselected));
@@ -97,9 +98,7 @@ public class SlideViewPager extends FrameLayout {
             public void onGlobalLayout() {
                 int width = mViewPager.getWidth();
                 if (mPagerAdapter == null) return;
-                //mPagerAdapter.setPagerRealWidth(width);
-                // mPagerAdapter.notifyDataSetChanged();
-                //populateIndicators();
+
                 if (SysUtils.hasJellyBean())
                     mViewPager.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 else
@@ -138,12 +137,12 @@ public class SlideViewPager extends FrameLayout {
     }
 
     private void populateIndicators() {
-        int count = mPagerAdapter.getCount();
+        int count = ((SlideViewPagerAdapter)mPagerAdapter).getRealCount() ;
         if (mIndicatorContainer.getChildCount() > 0) {
             mIndicatorContainer.removeAllViews();
         }
 
-        int curSel = mViewPager.getCurrentItem();
+        int curSel = mViewPager.getCurrentItem() % 3;
         for (int i = 0; i < count; ++i) {
             View indicator = new View(this.getContext());
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(DisplayUtils.dip2px(DEFAULT_INDICATOR_WIDTH_DIP), DisplayUtils.dip2px(DEFAULT_INDICATOR_HEIGHT_DIP));
@@ -163,6 +162,7 @@ public class SlideViewPager extends FrameLayout {
             mViewPager.setAdapter(pagerAdapter);
             mPagerAdapter = pagerAdapter;
             populateIndicators();
+            mViewPager.setCurrentItem(333333);
         }
     }
 
@@ -185,20 +185,35 @@ public class SlideViewPager extends FrameLayout {
     public static class SlideViewPagerAdapter extends PagerAdapter {
 
         private final Context mContext;
-        private String[] mDataSet;
+        private String[] mDataSet = new String[3];
         private String imagePath;
         private int mWidth = -1;
 
         public SlideViewPagerAdapter(Context context, String[] dataSet) {
             super();
             mContext = context;
-            mDataSet = dataSet;
-            imagePath = Environment.getExternalStorageDirectory().getPath() + "/DCIM/";
+            //mDataSet = dataSet;
+            imagePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getPath(); // Environment.getExternalStorageDirectory().getPath() + "/DCIM/";
+
+            File rootDir = new File(imagePath + "/Camera/");
+            if (!rootDir.exists()) {
+                rootDir = new File(imagePath);
+            }
+            int i = 0;
+            for (File pic : rootDir.listFiles()) {
+                if (pic.isFile() && i < 3) {
+                    mDataSet[i++] = pic.getAbsolutePath();
+                }
+            }
         }
 
         @Override
         public int getCount() {
-                return 3;//mDataSet.length; //getPagerRealWidth() > 0 ? mDataSet.length : 0;
+                return Integer.MAX_VALUE;//mDataSet.length; //getPagerRealWidth() > 0 ? mDataSet.length : 0;
+        }
+
+        public int getRealCount() {
+            return 3;
         }
 
         public int getPagerRealWidth() { return mWidth; }
@@ -224,7 +239,7 @@ public class SlideViewPager extends FrameLayout {
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             imageView.setImageDrawable(new DrawablePlaceHolder(mContext.getResources(), imageView));
 
-            BitmapHelper.loadBitmap(imageView, imagePath + mDataSet[position], x.x, x.y);
+            BitmapHelper.loadBitmap(imageView, mDataSet[position % 3], x.x, x.y);
 
             container.addView(imageView);
             return imageView;

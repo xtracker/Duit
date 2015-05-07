@@ -14,9 +14,22 @@
         android:layout_marginEnd="@dimen/viewholder_item_padding"
         android:layout_marginRight="@dimen/viewholder_item_padding"/>
 
-    <TextView android:id="@+id/text_article_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textStyle="bold"/>
+    <LinearLayout android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView android:id="@+id/text_article_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/item_title_color" />
+        <TextView android:id="@+id/text_abstract"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="2dp"
+            android:lineSpacingMultiplier="1.2"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:text="Android中的ListView可以实现屏幕上下滑动来浏览数据，ViewPager则实现了左右滑动的效果。我们可以拿它做很多事情，"/>
+        </LinearLayout>
+
 </LinearLayout>
