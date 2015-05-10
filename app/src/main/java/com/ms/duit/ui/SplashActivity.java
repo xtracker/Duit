@@ -167,12 +167,6 @@ public class SplashActivity extends Activity {
         mSwitchActivityHandler.postDelayed(mSwitchActivityRunnable, 2000);
     }
 
-    @Override
-    public void onDestroy()
-    {
-        super.onDestroy();
-    }
-
     /**
      * Schedules a call to hide() in [delay] milliseconds, canceling any
      * previously scheduled calls.

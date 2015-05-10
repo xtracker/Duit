@@ -52,15 +52,13 @@ public class MainActivity extends ActionBarActivity {
             }
 
             public void onDrawerOpened(View drawerView) {
-                getSupportActionBar().setTitle("Opened");
+                getSupportActionBar().setTitle("Duit");
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
 
         mDrawerLayout.setDrawerListener(mActionBarDrawerToggle);
-
         mDrawerRadioGroup = (RadioGroup)findViewById(R.id.radioGroup);
-
         selectItem(0);
     }
 
@@ -117,7 +115,7 @@ public class MainActivity extends ActionBarActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggles
-         mActionBarDrawerToggle.onConfigurationChanged(newConfig);
+        mActionBarDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     /**
@@ -140,7 +138,7 @@ public class MainActivity extends ActionBarActivity {
                                  Bundle savedInstanceState) {
 
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            mRecyclerView = (RecyclerView)rootView.findViewById(R.id.recyclerview_main);
+            mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview_main);
             mRecyclerView.setHasFixedSize(true);
             mLayoutManager = new LinearLayoutManager(this.getActivity());
             mRecyclerView.setLayoutManager(mLayoutManager);
@@ -165,14 +163,9 @@ public class MainActivity extends ActionBarActivity {
                 }
             });
 
-            mSwipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.refresh_main);
+            mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.refresh_main);
             mSwipeRefreshLayout.setEnabled(false);
             return rootView;
-        }
-
-        @Override
-        public void onDestroyView() {
-            super.onDestroyView();
         }
 
         @Override

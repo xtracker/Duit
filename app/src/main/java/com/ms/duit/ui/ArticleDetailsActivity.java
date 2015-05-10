@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.ms.duit.R;
 
@@ -24,6 +25,12 @@ public class ArticleDetailsActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         mWebView = (WebView)findViewById(R.id.web_view_article_details);
+        mWebView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return true;
+            }
+        });
     }
 
 
@@ -43,9 +50,9 @@ public class ArticleDetailsActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            String summary = "<p>This is a test article</p>";
+            String summary = "<p>This is a test article</p><img src=\"http://img4.cache.netease.com/2008/2013/9/18/2013091800585877c89.jpg\"></img>";
             mWebView.loadData(summary, "text/html", null);
-            //mWebView.loadUrl("http://www.baidu.com");
+            //mWebView.loadUrl("http://www.csdn.net/article/2015-05-08/2824643");
             return true;
         }
 

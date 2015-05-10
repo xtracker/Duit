@@ -18,7 +18,6 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,8 +25,6 @@ import android.widget.TextView;
 
 import com.ms.duit.R;
 import com.ms.duit.utils.DisplayUtils;
-import com.ms.duit.utils.SysUtils;
-import com.ms.duit.utils.bitmap.BitmapHelper;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -93,7 +90,7 @@ public class SlideViewPager extends FrameLayout {
         this.addView(mIndicatorContainer);
 
 
-        mViewPager.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+ /*       mViewPager.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 int width = mViewPager.getWidth();
@@ -104,11 +101,12 @@ public class SlideViewPager extends FrameLayout {
                 else
                     mViewPager.getViewTreeObserver().removeGlobalOnLayoutListener(this);
             }
-        });
+        });*/
 
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                SlideViewPager.this.getParent().requestDisallowInterceptTouchEvent(true);
 
             }
 
@@ -119,6 +117,7 @@ public class SlideViewPager extends FrameLayout {
                 }*/
 
                 refreshIndicators(position);
+
             }
 
             @Override
@@ -162,7 +161,7 @@ public class SlideViewPager extends FrameLayout {
             mViewPager.setAdapter(pagerAdapter);
             mPagerAdapter = pagerAdapter;
             populateIndicators();
-            mViewPager.setCurrentItem(333333);
+            mViewPager.setCurrentItem(3333333);
         }
     }
 
@@ -239,7 +238,7 @@ public class SlideViewPager extends FrameLayout {
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             imageView.setImageDrawable(new DrawablePlaceHolder(mContext.getResources(), imageView));
 
-            BitmapHelper.loadBitmap(imageView, mDataSet[position % 3], x.x, x.y);
+            // BitmapHelper.loadBitmap(imageView, mDataSet[position % 3], x.x, x.y);
 
             container.addView(imageView);
             return imageView;

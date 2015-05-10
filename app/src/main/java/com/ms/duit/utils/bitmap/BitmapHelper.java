@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import com.ms.duit.DuitApplication;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
 
 /**
@@ -112,7 +113,7 @@ public class BitmapHelper {
         private final int mWidth, mHeight;
         public BitmapWorkerTask(ImageView imageView, Object data, int width, int height) {
             super();
-            imageViewWeakReference = new WeakReference<ImageView>(imageView);
+            imageViewWeakReference = new WeakReference(imageView);
             mData = data;
             mWidth = width;
             mHeight = height;
@@ -128,13 +129,23 @@ public class BitmapHelper {
                 e.printStackTrace();
             }
 
-            Bitmap bmp = decodeSampledBitmapFromResource((String)mData, mWidth, mHeight);
+            File bitmapFile = new File((String)mData);
+            if (bitmapFile.exists()) {
+                Bitmap bmp = decodeSampledBitmapFromResource((String)mData, mWidth, mHeight);
 
-            return new BitmapDrawable(DuitApplication.getAppContext().getResources(), /*ThumbnailUtils.extractThumbnail(*/bmp/*, mWidth, mHeight)*/);
+                return new BitmapDrawable(DuitApplication.getAppContext().getResources(), /*ThumbnailUtils.extractThumbnail(*/bmp/*, mWidth, mHeight)*/);
+            }
+            else {
+                return null;
+            }
+
         }
 
         @Override
         protected void onPostExecute(BitmapDrawable bitmapDrawable) {
+            if (bitmapDrawable == null) {
+                return;
+            }
             ImageView imageView = imageViewWeakReference.get();
             if (imageView != null) {
                 imageView.setImageDrawable(bitmapDrawable);

@@ -42,7 +42,7 @@ public class HeaderFooterRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
             return new ArticleItemViewHolder(v, (TextView)v.findViewById(R.id.text_article_title));
         } else {
             TextView textView = new TextView(parent.getContext());
-            textView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            textView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 100));
             textView.setGravity(Gravity.CENTER);
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
             textView.setTypeface(Typeface.DEFAULT);
@@ -55,9 +55,9 @@ public class HeaderFooterRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
     @Override
     public void onViewRecycled(RecyclerView.ViewHolder holder) {
         super.onViewRecycled(holder);
-        OnRecycledListener recycledListener = (OnRecycledListener)holder;
+        OnStateChangedListener recycledListener = (OnStateChangedListener)holder;
         if (recycledListener != null) {
-            recycledListener.OnRecycled();
+            recycledListener.onRecycled();
         }
     }
 
@@ -68,7 +68,7 @@ public class HeaderFooterRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
             //pager.setAdapter(new SlideViewPager.SlideViewPagerAdapter(pager.getContext(), new String[] {"P50408-205046.JPG","P50408-214225.JPG", "P50408-214230.JPG"}));
 
         } else if (holder instanceof ArticleItemViewHolder)  {
-            (((ArticleItemViewHolder)holder).ArticleTextView).setText("Android开发技巧");
+            (((ArticleItemViewHolder)holder).ArticleTextView).setText("央行明日起降息0.25个百分点");
             ImageView imageView = (ImageView)holder.itemView.findViewById(R.id.article_thumbnail);
             imageView.setImageResource(R.mipmap.duit);
         }
@@ -92,30 +92,41 @@ public class HeaderFooterRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
         return TYPE_ITEM;
     }
 
-    public static interface OnRecycledListener {
-        void OnRecycled();
+    public static interface OnStateChangedListener {
+        void onRecycled();
+        void onBind();
     }
 
-    public static class HeaderViewHolder extends RecyclerView.ViewHolder implements OnRecycledListener {
+    public static class HeaderViewHolder extends RecyclerView.ViewHolder implements OnStateChangedListener {
 
         public HeaderViewHolder(View itemView) {
             super(itemView);
         }
 
         @Override
-        public void OnRecycled() {
+        public void onRecycled() {
+
+        }
+
+        @Override
+        public void onBind() {
 
         }
     }
 
-    public static class FooterViewHolder extends RecyclerView.ViewHolder implements OnRecycledListener {
+    public static class FooterViewHolder extends RecyclerView.ViewHolder implements OnStateChangedListener {
 
         public FooterViewHolder(View itemView) {
             super(itemView);
         }
 
         @Override
-        public void OnRecycled() {
+        public void onRecycled() {
+
+        }
+
+        @Override
+        public void onBind() {
 
         }
     }

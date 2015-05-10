@@ -2,7 +2,7 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">0dp</dimen>
     <dimen name="activity_vertical_margin">0dp</dimen>
-    <dimen name="viewholder_article_item_height">80dp</dimen>
+    <dimen name="viewholder_article_item_height">90dp</dimen>
     <dimen name="viewholder_item_padding">8dp</dimen>
     <dimen name="actionbar_height">48dip</dimen>
     <dimen name="slideview_pager_indicator_height">2dip</dimen>
