@@ -3,11 +3,11 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
 
-        <item name="actionBarSize">@dimen/actionbar_height</item>
+        <!--item name="actionBarSize">@dimen/actionbar_height</item-->
         <item name="android:actionBarStyle">@style/DuitActionBar</item>
         <!-- Support library compatibility -->
         <item name="actionBarStyle">@style/DuitActionBar</item>
-        <item name="android:actionBarSize">@dimen/actionbar_height</item>
+        <!--item name="android:actionBarSize">@dimen/actionbar_height</item-->
 
     </style>
 
@@ -20,9 +20,11 @@
         <item name="background">@color/indicator_selected</item>
     </style>
 
-    <style name="FullscreenTheme" parent="android:Theme.NoTitleBar">
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowBackground">@null</item>
+    <style name="FullscreenTheme" parent="android:Theme.Translucent.NoTitleBar">
+
+        <item name="windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+
         <item name="metaButtonBarStyle">@style/ButtonBar</item>
         <item name="metaButtonBarButtonStyle">@style/ButtonBarButton</item>
     </style>

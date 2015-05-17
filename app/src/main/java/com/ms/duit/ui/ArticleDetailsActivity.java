@@ -1,5 +1,7 @@
 package com.ms.duit.ui;
 
+import android.app.ProgressDialog;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -21,14 +23,30 @@ public class ArticleDetailsActivity extends ActionBarActivity {
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar_article_details);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         mWebView = (WebView)findViewById(R.id.web_view_article_details);
         mWebView.setWebViewClient(new WebViewClient() {
+            ProgressDialog progressDialog = new ProgressDialog(ArticleDetailsActivity.this);
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 return true;
+            }
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+
+                progressDialog.setMessage("Loading...");
+                progressDialog.show();
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                progressDialog.dismiss();
             }
         });
     }
@@ -50,9 +68,10 @@ public class ArticleDetailsActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            String url = "http://xw.qq.com//ent/20150513051381/ENT2015051305138103";
             String summary = "<p>This is a test article</p><img src=\"http://img4.cache.netease.com/2008/2013/9/18/2013091800585877c89.jpg\"></img>";
-            mWebView.loadData(summary, "text/html", null);
-            //mWebView.loadUrl("http://www.csdn.net/article/2015-05-08/2824643");
+            //mWebView.loadData(summary, "text/html", null);
+            mWebView.loadUrl(url);
             return true;
         }
 

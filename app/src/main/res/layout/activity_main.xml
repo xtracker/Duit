@@ -16,7 +16,8 @@
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/navigation_drawer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1">
         <FrameLayout android:id="@+id/content_frame"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -43,9 +44,8 @@
                 android:id="@+id/radioMsgList"
                 android:text="主页"
                 android:textColor="@color/drawer_item_text"
-                android:drawableLeft="@drawable/radio_drawer_item"
-                android:drawableStart="@drawable/radio_drawer_item"
-                android:background="@drawable/drawer_item_background"
+                android:drawableLeft="@drawable/drawable_radio_article"
+                android:drawableStart="@drawable/drawable_radio_article"
                 android:drawablePadding="-50dip"
                 android:paddingLeft="60dip"
                 android:paddingTop="10dip"
@@ -61,9 +61,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/radioMap"
                 android:textColor="@color/drawer_item_text"
-                android:background="@drawable/drawer_item_background"
-                android:drawableLeft="@drawable/radio_drawer_item"
-                android:drawableStart="@drawable/radio_drawer_item"
+                android:drawableLeft="@drawable/drawable_radio_article"
+                android:drawableStart="@drawable/drawable_radio_article"
                 android:drawablePadding="-50dip"
                 android:paddingLeft="60dip"
                 android:paddingTop="10dip"
@@ -82,8 +81,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/radioOthers"
                 android:textColor="@color/drawer_item_text"
-                android:drawableLeft="@drawable/radio_drawer_item"
-                android:background="@drawable/drawer_item_background"
+                android:drawableLeft="@drawable/drawable_radio_article"
                 android:drawablePadding="-50dip"
                 android:paddingLeft="60dip"
                 android:paddingTop="10dip"
@@ -99,8 +97,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/radioMe"
                 android:textColor="@color/drawer_item_text"
-                android:drawableLeft="@drawable/radio_drawer_item"
-                android:background="@drawable/drawer_item_background"
+                android:drawableLeft="@drawable/drawable_radio_article"
                 android:drawablePadding="-50dip"
                 android:paddingLeft="60dip"
                 android:paddingTop="10dip"
@@ -112,5 +109,51 @@
         </RadioGroup>
 
     </android.support.v4.widget.DrawerLayout>
+
+    <RadioGroup android:id="@+id/radioGroupBottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:paddingTop="10dip"
+        android:paddingBottom="5dip"
+        android:background="@drawable/drawable_nav_background"
+        android:orientation="horizontal">
+        <RadioButton
+            android:gravity="center"
+            android:button="@null"
+            android:layout_width="match_parent"
+            android:layout_weight="1.0"
+            android:layout_height="wrap_content"
+            android:id="@+id/radioMainPage"
+            android:text="主页"
+            android:textSize="12dip"
+            android:textColor="@drawable/color_radio_item"
+            android:drawableTop="@drawable/drawable_radio_article"
+            android:checked="true" />
+        <RadioButton
+            android:button="@null"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_weight="1.0"
+            android:layout_height="wrap_content"
+            android:id="@+id/radioFind"
+            android:textColor="@drawable/color_radio_item"
+            android:drawableTop="@drawable/drawable_radio_article"
+            android:text="发现"
+            android:textSize="12dip"
+            android:textAlignment="center" />
+        <RadioButton
+            android:button="@null"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_weight="1.0"
+            android:layout_height="wrap_content"
+            android:id="@+id/radioAbout"
+            android:textColor="@drawable/color_radio_item"
+            android:drawableTop="@drawable/drawable_radio_me"
+            android:text="我"
+            android:textSize="12dip"
+            android:textAlignment="center" />
+    </RadioGroup>
 
 </LinearLayout>

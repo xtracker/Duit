@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="false">
+        <layer-list>
+            <item>
+                <shape android:shape="ring" android:useLevel="false" android:thickness="1dip" android:innerRadius="10dip">
+                    <solid android:color="@color/nav_item_unchecked" />
+                    <size android:width="22dip" android:height="22dip" />
+                </shape>
+            </item>
+            <item android:top="-10dip">
+                <shape android:shape="ring" android:useLevel="false" android:thickness="3dip" android:innerRadius="0dip">
+                    <solid android:color="@color/nav_item_unchecked" />
+                    <size android:width="22dip" android:height="22dip" />
+                </shape>
+            </item>
+
+            <item android:top="10dip" android:bottom="5dip" android:left="5dip" android:right="5dip" >
+                <shape android:shape="oval" android:useLevel="false">
+                    <solid android:color="@color/nav_item_unchecked" />
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+    <item android:state_checked="true">
+        <layer-list>
+            <item>
+                <shape android:shape="ring" android:useLevel="false" android:thickness="11dip" android:innerRadius="0dip">
+                    <solid android:color="@color/nav_item_checked" />
+                    <size android:width="22dip" android:height="22dip" />
+                </shape>
+            </item>
+            <item android:top="-10dip">
+                <shape android:shape="ring" android:useLevel="false" android:thickness="3dip" android:innerRadius="0dip">
+                    <solid android:color="@color/drawer_item_text" />
+                    <size android:width="22dip" android:height="22dip" />
+                </shape>
+            </item>
+
+            <item android:top="10dip" android:bottom="5dip" android:left="5dip" android:right="5dip" >
+                <shape android:shape="oval" android:useLevel="false">
+                    <solid android:color="@color/drawer_item_text" />
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+</selector>

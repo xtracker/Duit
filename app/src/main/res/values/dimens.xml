@@ -4,7 +4,7 @@
     <dimen name="activity_vertical_margin">0dp</dimen>
     <dimen name="viewholder_article_item_height">90dp</dimen>
     <dimen name="viewholder_item_padding">8dp</dimen>
-    <dimen name="actionbar_height">48dip</dimen>
+    <dimen name="actionbar_height">60dip</dimen>
     <dimen name="slideview_pager_indicator_height">2dip</dimen>
     <dimen name="slideview_pager_indicator_width">10dip</dimen>
 </resources>

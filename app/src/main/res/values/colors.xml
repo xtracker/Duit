@@ -7,6 +7,9 @@
     <color name="duit_app_color_primary">#e311b1f2</color>
     <color name="duit_app_color_grey">#ffc1c1c1</color>
     <color name="item_title_color">#f10c0c0c</color>
+    <color name="nav_background">#41c3c3c3</color>
+    <color name="nav_item_unchecked">#a35d5d5d</color>
+    <color name="nav_item_checked">@color/duit_app_color_primary</color>
 
     <color name="black_overlay">#66000000</color>
 </resources>

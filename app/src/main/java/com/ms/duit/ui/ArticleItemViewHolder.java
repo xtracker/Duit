@@ -31,12 +31,12 @@ public class ArticleItemViewHolder extends RecyclerView.ViewHolder implements He
     }
 
     @Override
-    public void onRecycled() {
+    public void onRecycled(HeaderFooterRecyclerViewAdapter adapter) {
 
     }
 
     @Override
-    public void onBind() {
+    public void onBind(HeaderFooterRecyclerViewAdapter adapter) {
 
     }
 }
