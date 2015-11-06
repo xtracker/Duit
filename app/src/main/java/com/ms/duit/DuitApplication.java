@@ -2,6 +2,7 @@ package com.ms.duit;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Debug;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
@@ -47,5 +48,6 @@ public class DuitApplication extends Application {
         dm.densityDpi = targetDensityDpi;
         dm.density = targetDensity;
         dm.scaledDensity = targetDensity;
+        Log.d(TAG, "Successfully set DPI to " + targetDensity);
     }
 }

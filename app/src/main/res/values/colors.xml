@@ -4,7 +4,7 @@
     <color name="indicator_selected">@color/duit_app_color_primary</color>
     <color name="indicator_unselected">#dfe6e6e6</color>
     <color name="drawer_item_text">#ffffff</color>
-    <color name="duit_app_color_primary">#e311b1f2</color>
+    <color name="duit_app_color_primary">#ff11b1f2</color>
     <color name="duit_app_color_grey">#ffc1c1c1</color>
     <color name="item_title_color">#f10c0c0c</color>
     <color name="nav_background">#41c3c3c3</color>
