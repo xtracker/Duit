@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.view.ViewGroup.LayoutParams;
 
 import com.ms.duit.R;
 
@@ -35,7 +36,7 @@ public class HeaderFooterRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 
         if (viewType == TYPE_HEADER) {
             SlideViewPager slideViewPager = new SlideViewPager(parent.getContext());
-            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,  recyclerViewWidth / 2 );
+            LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT,  recyclerViewWidth / 2 );
             slideViewPager.setLayoutParams(layoutParams);
             slideViewPager.setAdapter(new SlideViewPager.SlideViewPagerAdapter(slideViewPager.getContext(), new String[] {"P50408-205046.JPG", "P50408-214225.JPG", "P50408-214230.JPG"}));
 
@@ -81,7 +82,7 @@ public class HeaderFooterRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof HeaderViewHolder) {
-            SlideViewPager pager = (SlideViewPager)holder.itemView;
+            //SlideViewPager pager = (SlideViewPager)holder.itemView;
             //pager.setAdapter(new SlideViewPager.SlideViewPagerAdapter(pager.getContext(), new String[] {"P50408-205046.JPG","P50408-214225.JPG", "P50408-214230.JPG"}));
 
         } else if (holder instanceof ArticleItemViewHolder)  {
@@ -92,7 +93,7 @@ public class HeaderFooterRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 
         OnStateChangedListener recycledListener = (OnStateChangedListener)holder;
         if (recycledListener != null) {
-            recycledListener.onBind(this);
+            recycledListener.onBind(this, position);
         }
     }
 
@@ -120,7 +121,7 @@ public class HeaderFooterRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 
     public interface OnStateChangedListener {
         void onRecycled(HeaderFooterRecyclerViewAdapter adapter);
-        void onBind(HeaderFooterRecyclerViewAdapter adapter);
+        void onBind(HeaderFooterRecyclerViewAdapter adapter, int position);
     }
 
     public static class HeaderViewHolder extends RecyclerView.ViewHolder implements OnStateChangedListener {
@@ -135,7 +136,7 @@ public class HeaderFooterRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
         }
 
         @Override
-        public void onBind(HeaderFooterRecyclerViewAdapter adapter) {
+        public void onBind(HeaderFooterRecyclerViewAdapter adapter, int position) {
 
         }
     }
@@ -152,7 +153,7 @@ public class HeaderFooterRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
         }
 
         @Override
-        public void onBind(final HeaderFooterRecyclerViewAdapter adapter) {
+        public void onBind(final HeaderFooterRecyclerViewAdapter adapter, int position) {
             Log.d("Adapter", "Footer bind");
              (new Handler()).postDelayed(new Runnable() {
 

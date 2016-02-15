@@ -2,8 +2,10 @@ package com.ms.duit.ui;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import junit.framework.Assert;
 
 /**
  * Created by jarzhao on 4/5/2015.
@@ -36,7 +38,9 @@ public class ArticleItemViewHolder extends RecyclerView.ViewHolder implements He
     }
 
     @Override
-    public void onBind(HeaderFooterRecyclerViewAdapter adapter) {
-
+    public void onBind(HeaderFooterRecyclerViewAdapter adapter, int position) {
+        Assert.assertTrue("position should be equal to adapter position", position == this.getAdapterPosition());
+        int adp = this.getAdapterPosition();
+        Log.d("Article", "position = " + position + " adapter position = " + adp);
     }
 }
